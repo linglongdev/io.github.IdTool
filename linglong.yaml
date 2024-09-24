@@ -1,0 +1,28 @@
+version: "1"
+
+package:
+  id: io.github.IdTool
+  name: IdTool
+  version: 0.5.0.1
+  kind: app
+  description: |
+    A utility for inspecting and manipulating SQRL identities.
+
+command:
+  - /opt/apps/io.github./files/bin/IdTool
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/sqrldev/IdTool.git
+    version: master
+    commit: 65ce8b7e92490e09118c6b674555f7744189914a
+
+build: |
+  cd /project/linglong/sources/IdTool.git
+  git apply ../../../0001-install.patch
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install

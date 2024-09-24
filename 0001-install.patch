@@ -1,0 +1,69 @@
+From b2514638de5d29ca5f87fe40b4b8c78716544c28 Mon Sep 17 00:00:00 2001
+From: wjyrich <1071633242@qq.com>
+Date: Mon, 30 Sep 2024 10:54:17 +0800
+Subject: [PATCH] install
+
+---
+ IdTool.desktop | 11 +++++++++++
+ IdTool.pro     | 18 +++++++++---------
+ 2 files changed, 20 insertions(+), 9 deletions(-)
+ create mode 100644 IdTool.desktop
+
+diff --git a/IdTool.desktop b/IdTool.desktop
+new file mode 100644
+index 0000000..b22b4df
+--- /dev/null
++++ b/IdTool.desktop
+@@ -0,0 +1,11 @@
++[Desktop Entry]
++Categories=Accessibility;Qt;Utility;
++Exec=IdTool
++Name=IdTool
++Name[zh_CN]=IdTool
++Icon=IdTool_Icon
++StartupNotify=false
++Terminal=false
++Type=Application
++GenericName=IdTool
++Version=0.5
+\ No newline at end of file
+diff --git a/IdTool.pro b/IdTool.pro
+index 66073a4..c57914e 100644
+--- a/IdTool.pro
++++ b/IdTool.pro
+@@ -24,12 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
+ 
+ CONFIG += c++11
+ 
+-# Copy the "blockdef" directory to the build directory
+-copyblockdef.commands = $(COPY_DIR) \"$$shell_path($$PWD\\blockdef)\" \"$$shell_path($$OUT_PWD\\blockdef)\"
+-first.depends = $(first) copyblockdef
+-export(first.depends)
+-export(copyblockdef.commands)
+-QMAKE_EXTRA_TARGETS += first copyblockdef
++
+ 
+ 
+ SOURCES += \
+@@ -80,10 +75,15 @@ FORMS += \
+         ui/mainwindow.ui
+ 
+ # Default rules for deployment.
+-qnx: target.path = /tmp/$${TARGET}/bin
+-else: unix:!android: target.path = /opt/$${TARGET}/bin
+-!isEmpty(target.path): INSTALLS += target
++target.path = $$PREFIX/bin
++INSTALLS += target
++
++desktop.files = IdTool.desktop
++desktop.path = $$PREFIX/share/applications/
++icons.path = $$PREFIX/share/icons/hicolor/apps/
++icons.files = res/img/IdTool_Icon.png
+ 
++INSTALLS += desktop icons
+ RESOURCES += \
+     res.qrc
+ 
+-- 
+2.43.4
+

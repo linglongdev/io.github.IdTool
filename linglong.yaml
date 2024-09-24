@@ -1,0 +1,36 @@
+version: "1"
+
+package:
+  id: io.github.IdTool
+  name: IdTool
+  version: 0.5.0.3
+  kind: app
+  description: |
+    A utility for inspecting and manipulating SQRL identities.
+
+command:
+  - /opt/apps/io.github.IdTool/files/bin/IdTool
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/sqrldev/IdTool.git
+    version: master
+    commit: 65ce8b7e92490e09118c6b674555f7744189914a
+  - kind: file
+    url: http://ftp.cn.debian.org/debian/pool/main/libs/libsodium/libsodium-dev_1.0.17-1_amd64.deb
+    digest: ce1c5c10ad57070fe024eb071a43758887e75009a0983933344ff9f135e0d347
+  - kind: file
+    url: http://ftp.cn.debian.org/debian/pool/main/libs/libsodium/libsodium23_1.0.17-1_amd64.deb
+    digest: 8af5bd805703efdb258182c50b48237d08d69babc3a17c078e425c91ea237322
+
+build: |
+  bash ./install_dep linglong/sources $PREFIX
+
+  cd /project/linglong/sources/IdTool.git
+  git apply ../../../0001-install.patch
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install
